@@ -91,8 +91,8 @@ R4:
 config t
 router eigrp 100
 no auto-summary
-network ________ 0.0.0.__
-network ________ 0.0.0.__
+network 10.1.4.4 0.0.0.3
+network 10.1.4.8 0.0.0.3
 end
 
 
@@ -107,12 +107,13 @@ network 192.168.1.128 0.0.0.31
 
 D2#
 config t
-router eigrp CCNPENARSI
-address-family _____ ________ ___  ____
-network __________  _________
-network __________  _________
-network __________  _________
-network __________  _________
+router eigrp ENCOR
+address-family ipv4 unicast autonomous-system 100
+network 10.2.1.0 0.0.0.255
+network 10.2.1.0 0.0.0.255
+network 192.168.1.128 0.0.0.31
+network 10.1.4.8 0.0.0.3
+end
 
 D        10.2.2.0/24 [90/281856] via 10.1.4.10, 00:02:32, 
                      [90/281856] v
@@ -123,10 +124,10 @@ config t
 int lo 0
 ip add 3.3.3.3 255.255.255.255
 router ospf 1
-router-id _______
-network _______ _______ area __
-network _______ _______ area __
-network _______ _______ area __
+router-id 3.3.3.3
+network 3.3.3.3 0.0.0.0 area 0
+network 10.1.1.8 0.0.0.3 area 34
+network 10.1.4.4 0.0.0.3 area 0
 do sh ip protocol
 @@2:
 config t
@@ -153,8 +154,8 @@ int lo 0
 ip add 1.1.1.1 255.255.255.255
 router ospf 1
 router-id 1.1.1.1
-network _______ _______ area __
-network _______ _______ area __
+network 1.1.1.1 0.0.0.0 area 12
+network 10.1.1.0 0.0.0.3 area 12
 
 
 do sh ip protocol
