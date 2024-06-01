@@ -988,21 +988,22 @@ AMS: access,match,set....
 
 R1: weight is local Only,
 config t
-access-list 52 permit host 52.52.52.52
-access-list 53 permit host 53.53.53.53
-route-map ISP2for52 permit 10
- match ip address 52
+access-list 22 permit host 22.22.22.22
+access-list 33 permit host 33.33.33.33
+route-map ISP2for22 permit 10
+ match ip address 22
+ match ip address 33
  set weight 152
-route-map ISP2for52 permit 20
+route-map ISP2for22 permit 20
 !
-route-map ISP3for53 permit 10
- match ip address 53
+route-map ISP3for33 permit 10
+ match ip address 33
  set weight 153
-route-map ISP3for53 permit 20
+route-map ISP3for33 permit 20
 !
 router bgp 1
- neighbor 207.7.7.2 route-map ISP2for52 in
- neighbor 209.9.9.3 route-map ISP3for53 in
+ neighbor 207.7.7.2 route-map ISP2for22 in
+ neighbor 209.9.9.3 route-map ISP3for33 in
 end
 clear ip bgp * soft
 
@@ -1245,10 +1246,10 @@ access-list 42 permit host 42.42.42.42
 access-list 43 permit host 43.43.43.43
 route-map LP1 permit 10
  match ip address 41
-  set local-pref 414
+  set local-pref 422
 route-map LP1 permit 20
  match ip address 42
-  set local-pref 424
+  set local-pref 433
 route-map LP1 Deny 30
  match ip address 43
 route-map LP1 Permit 40
@@ -1400,12 +1401,12 @@ R1:
 44.44.44.44 thru:
 
 The power of ASPATH, you can tell other routers to use other ISPs  (not yours!) to be
-routed: in this case, ISP1 and ISP3 will tell R1 to use ISP2 a lot!!!
+routed: in this case, ISP1 and ISP3 will tell R1 to use ISP2 a lot for all traffic/internet!!!
 
 @ISP1
 	config t
 		route-map ASPATH permit 10
-			set as-path prepend 45 45 45 45 45
+			set as-path prepend 45 45 45
 			exit
 		router bgp 45
 			neighbor 208.8.8.1 route-map ASPATH OUT
@@ -1414,20 +1415,17 @@ routed: in this case, ISP1 and ISP3 will tell R1 to use ISP2 a lot!!!
 
 @ISP3
 	config t
-_________________
-____________________________________
-____________________________________
-____________________________________
-____________________________________
-____________________________________
-____________________________________
-____________________________________
-____________________________________
-____________________________________
-____________________________________
-____________________________________
-____________________________________
-____________________________________
+
+
+
+config t
+		route-map ASPATH3 permit 10
+			set as-path prepend 3 3 3
+			exit
+		router bgp 3
+			neighbor 209.9.9.1 route-map ASPATH3 OUT
+			do clear ip bgp * soft
+			end
 end
 
 
@@ -1658,20 +1656,19 @@ use it also.
 
 ISP2:
 	config t
-_________________
-____________________________________
-____________________________________
-____________________________________
-____________________________________
-____________________________________
-____________________________________
-____________________________________
-____________________________________
-____________________________________
-____________________________________
-____________________________________
-____________________________________
-____________________________________
+config t
+		access-list 42 permit host 22.22.22.22
+access-list 44 permit host 44.44.44.44
+		no route-map MEDnotISP2
+		route-map MEDnotISP2 permit 10
+			match ip address 22
+			set metric 222
+			set as-path prepend 2 2
+		route-map MEDnotISP2 permit 20
+		router bgp 45
+			neigh 207.7.7.1 route-map MEDnotISP2 out
+			do clear ip bgp * soft
+			end
 ____________________________________
 ____________________________________
 ____________________________________
