@@ -19,12 +19,13 @@ no logging console
 no ip domain-lookup
 spanning-tree vlan 1-100 root primary
 
+
 D2:/BABA
 config t
 hostname D2
 no logging console
 no ip domain-lookup
-spanning-tree vlan ______ root _____________
+spanning-tree vlan 1-100 root primary
 
  
 task6.2: encorCCNP: trunk lahat:
@@ -223,10 +224,10 @@ end
 config t
 router bgp 2
 bgp log-neighbor-changes
-neighbor _________ remote-as __
-neighbor _________ remote-as __
-neighbor _________ remote-as __
-neighbor _________ remote-as __
+neighbor 24.2.4.4 remote-as 45
+neighbor 25.2.5.5 remote-as 45
+neighbor 32.3.2.3 remote-as 3
+neighbor 207.7.7.1 remote-as 1
 network 22.22.22.22 mask 255.255.255.255
 network 24.2.4.0 mask 255.255.255.0
 network 25.2.5.0 mask 255.255.255.0
